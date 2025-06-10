@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>熱中症フローチャート＆連絡先</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        button {
+            background-color: transparent;
+            background-image: none;
+            cursor: pointer;
+        }
+        button:focus {
+            outline: 1px dotted;
+            outline: 5px auto -webkit-focus-ring-color;
+        }
+        .hidden {
+            display: none;
+        }
+        .flex {
+            display: flex;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .justify-center {
+            justify-content: center;
+        }
+        .gap-4 {
+            gap: 1rem;
+        }
+        .rounded-lg {
+            border-radius: .5rem;
+        }
+        .rounded-2xl {
+            border-radius: 1rem;
+        }
+        .border-2 {
+            border-width: 2px;
+        }
+        .bg-white {
+            background-color: #fff;
+        }
+        .bg-gray-50 {
+            background-color: #f9fafb;
+        }
+        .bg-indigo-50 {
+            background-color: #eef2ff;
+        }
+        .bg-indigo-600 {
+            background-color: #4f46e5;
+        }
+        .hover\:bg-gray-100:hover {
+            background-color: #f3f4f6;
+        }
+        .hover\:bg-indigo-700:hover {
+            background-color: #4338ca;
+        }
+        .border-gray-300 {
+            border-color: #d1d4d7;
+        }
+        .p-6 {
+            padding: 1.5rem;
+        }
+        .px-8 {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+        .py-3 {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .font-semibold {
+            font-weight: 600;
+        }
+        .font-bold {
+            font-weight: 700;
+        }
+        .text-white {
+            color: #fff;
+        }
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+        .text-gray-800 {
+            color: #1f2937;
+        }
+        .text-gray-600 {
+            color: #4b5563;
+        }
+        .text-indigo-600 {
+            color: #4f46e5;
+        }
+        .flex-1 {
+            flex: 1 1 0%;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .min-h-screen {
+            min-height: 100vh;
+        }
+        .min-h-\[64px\] {
+            min-height: 64px;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .max-w-2xl {
+            max-width: 42rem;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .mt-8 {
+            margin-top: 2rem;
+        }
+        .mb-2 {
+            margin-bottom: .5rem;
+        }
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+        .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);
+        }
+        .shadow-md {
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);
+        }
+        #q, #rt {
+            white-space: pre-line;
+        }
+        @media(min-width:768px) {
+            .md\:p-8 {
+                padding: 2rem;
+            }
+            .md\:text-2xl {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+            .md\:text-3xl {
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+            }
+            .md\:w-auto {
+                width: auto;
+            }
+            .md\:flex-row {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-2xl mx-auto p-6 md:p-8 bg-white rounded-2xl shadow-lg text-center">
+        <!-- Mode switching buttons -->
+        <div class="flex justify-center gap-4 mb-6">
+            <button id="flowchartModeBtn" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700">
+                フローチャート
+            </button>
+            <button id="contactsModeBtn" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-300">
+                連絡先
+            </button>
+            <button id="questionEditorModeBtn" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-300">
+                質問編集
+            </button>
+        </div>
+
+        <!-- Flowchart mode container -->
+        <div id="flowchartContainer">
+            <div id="c">
+                <div class="mb-6">
+                    <h2 id="q" class="text-xl md:text-2xl font-semibold text-gray-800 min-h-[64px] flex items-center justify-center"></h2>
+                </div>
+                <div id="o" class="flex flex-col md:flex-row gap-4 justify-center"></div>
+            </div>
+            <div id="r" class="hidden">
+                <h2 class="text-lg font-semibold text-gray-600 mb-2">あなたへの提案は…</h2>
+                <p id="rt" class="text-2xl md:text-3xl font-bold text-indigo-600 p-6 bg-indigo-50 rounded-lg"></p>
+
+                <!-- New contact display area for result screen -->
+                <div id="resultContacts" class="mt-6 p-4 bg-gray-100 rounded-lg text-left">
+                    <h3 class="font-semibold text-gray-700 mb-2">登録済みの緊急連絡先:</h3>
+                    <ul id="resultContactList" class="list-disc list-inside text-gray-800">
+                        <!-- Contacts will be dynamically added here -->
+                    </ul>
+                    <p id="noResultContactsMessage" class="text-gray-600 text-sm mt-2 hidden">まだ連絡先が登録されていません。</p>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4 justify-center mt-8">
+                    <button id="rs" class="w-full md:w-auto bg-indigo-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700">最初から</button>
+                    <button id="endBtn" class="w-full md:w-auto bg-gray-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-gray-700">終了</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contacts mode container -->
+        <div id="contactsContainer" class="hidden">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">緊急連絡先</h2>
+
+            <!-- Contact addition form -->
+            <div class="mb-8 p-6 bg-gray-50 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">新しい連絡先を追加</h3>
+                <input type="text" id="contactName" placeholder="名前" class="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500">
+                <input type="tel" id="contactPhone" placeholder="電話番号" class="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500">
+                <button id="addContactBtn" class="w-full bg-indigo-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700">
+                    連絡先を追加
+                </button>
+            </div>
+
+            <!-- Contact list -->
+            <div id="contactList" class="text-left">
+                <!-- Contacts will be dynamically added here -->
+                <p id="noContactsMessage" class="text-gray-600">まだ連絡先が登録されていません。</p>
+            </div>
+        </div>
+
+        <!-- Question Editor mode container -->
+        <div id="questionEditorContainer" class="hidden text-left">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">フローチャート質問編集</h2>
+
+            <!-- Select Question for Editing -->
+            <div class="mb-8 p-6 bg-gray-50 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">既存の質問を編集</h3>
+                <select id="selectQuestionToEdit" class="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500">
+                    <option value="">質問を選択してください</option>
+                </select>
+
+                <div id="editQuestionForm" class="hidden">
+                    <label for="editQuestionId" class="block text-gray-700 text-sm font-bold mb-2">質問ID:</label>
+                    <input type="text" id="editQuestionId" class="w-full p-3 mb-4 bg-gray-200 border-2 border-gray-300 rounded-lg cursor-not-allowed" readonly>
+
+                    <label for="editQuestionText" class="block text-gray-700 text-sm font-bold mb-2">質問文:</label>
+                    <textarea id="editQuestionText" rows="4" class="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"></textarea>
+
+                    <div id="editOptionsContainer">
+                        <h4 class="font-semibold text-gray-700 mb-2">選択肢:</h4>
+                        <!-- Options will be dynamically added here -->
+                    </div>
+                    <button id="addOptionBtn" class="bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-500 mt-4">
+                        選択肢を追加
+                    </button>
+                    <button id="deleteQuestionBtn" class="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-600 mt-4 ml-2">
+                        質問を削除
+                    </button>
+                    <button id="saveEditedQuestionBtn" class="w-full bg-indigo-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 mt-6">
+                        質問を保存
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add New Question Form -->
+            <div class="mb-8 p-6 bg-gray-50 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">新しい質問を追加</h3>
+                <label for="newQuestionId" class="block text-gray-700 text-sm font-bold mb-2">新しい質問ID:</label>
+                <input type="text" id="newQuestionId" placeholder="例: step1" class="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500">
+
+                <label for="newQuestionText" class="block text-gray-700 text-sm font-bold mb-2">質問文:</label>
+                <textarea id="newQuestionText" rows="4" placeholder="新しい質問のテキスト" class="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"></textarea>
+
+                <div id="newOptionsContainer">
+                    <h4 class="font-semibold text-gray-700 mb-2">選択肢:</h4>
+                    <!-- New options will be dynamically added here -->
+                </div>
+                <button id="addNewOptionBtn" class="bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-500 mt-4">
+                    選択肢を追加
+                </button>
+                <button id="saveNewQuestionBtn" class="w-full bg-indigo-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 mt-6">
+                    新しい質問を保存
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default flowchart data
+        const defaultFlowchartData = {
+            "start": {
+                "question": "熱中症を疑う症状があるか。\n例：めまい、失神、筋肉痛、筋肉の硬直、大量の発汗、頭痛、不快感、吐き気、嘔吐、倦怠感、虚脱感、意識障害、けいれん、手足の運動障害、高体温その他異常",
+                "options": [
+                    {"text": "ある", "next": "ある場合"},
+                    {"text": "ない", "next": "ない場合"}
+                ]
+            },
+            "ある場合": {
+                "question": "呼びかけには応じるか。\n",
+                "options": [
+                    {"text": "応じる", "next": "応じる場合"},
+                    {"text": "応じない", "next": "応じない場合"},
+                    {"text": "曖昧", "next": "曖昧な場合、自力で水分補給不可能"}
+                ]
+            },
+            "応じない場合": {
+                "isResult": true,
+                "question": "1．直ちに救急車を呼ぶこと。\n2.涼しい場所への避難、服をゆるめ身体を冷やすこと。\n3.重篤な場合は溺れないよう配慮しつつ直接水をかけるなど、とにかく冷やすこと。"
+            },
+            "ない場合": {
+                "isResult": true,
+                "question": "一瞬でも熱中症かな？と感じたらすぐ身体を冷やして休憩しましょう。"
+            },
+            "応じる場合": {
+                "question": "涼しい場所へ避難しつつ、水分を自力で接種できるか。",
+                "options": [
+                    {"text": "自力で水分補給可能", "next": "自力で水分補給可能な場合"},
+                    {"text": "自力で水分補給不可能", "next": "曖昧な場合、自力で水分補給不可能"}
+                ]
+            },
+            "曖昧な場合、自力で水分補給不可能": {
+                "isResult": true,
+                "question": "1.救急車を呼ぶことも視野に入れ、原則医療機関へ向かうこと。\n2.涼しい場所への避難、服をゆるめ身体を冷やすこと。\n"
+            },
+            "自力で水分補給可能な場合": {
+                "isResult": true,
+                "question": "そのまま安静にして十分に休息を取り、その日の作業は休むこと。\n※一人にしないこと。もしくは数十分に一度程度様子を伺うこと。"
+            }
+        };
+
+        // Load flowchart data from local storage, or use default if not found
+        let flowchartData = JSON.parse(localStorage.getItem('flowchartData')) || defaultFlowchartData;
+
+        // Get DOM elements for flowchart mode
+        const q = document.getElementById('q');
+        const o = document.getElementById('o');
+        const r = document.getElementById('r');
+        const rt = document.getElementById('rt');
+        const c = document.getElementById('c');
+        const rs = document.getElementById('rs');
+        const endBtn = document.getElementById('endBtn');
+
+        // Get DOM elements for mode switching
+        const flowchartModeBtn = document.getElementById('flowchartModeBtn');
+        const contactsModeBtn = document.getElementById('contactsModeBtn');
+        const questionEditorModeBtn = document.getElementById('questionEditorModeBtn');
+        const flowchartContainer = document.getElementById('flowchartContainer');
+        const contactsContainer = document.getElementById('contactsContainer');
+        const questionEditorContainer = document.getElementById('questionEditorContainer');
+
+        // Get DOM elements for contacts mode
+        const contactNameInput = document.getElementById('contactName');
+        const contactPhoneInput = document.getElementById('contactPhone');
+        const addContactBtn = document.getElementById('addContactBtn');
+        const contactList = document.getElementById('contactList');
+        const noContactsMessage = document.getElementById('noContactsMessage');
+        const resultContacts = document.getElementById('resultContacts');
+        const resultContactList = document.getElementById('resultContactList');
+        const noResultContactsMessage = document.getElementById('noResultContactsMessage');
+
+        // Get DOM elements for question editor mode
+        const selectQuestionToEdit = document.getElementById('selectQuestionToEdit');
+        const editQuestionForm = document.getElementById('editQuestionForm');
+        const editQuestionId = document.getElementById('editQuestionId');
+        const editQuestionText = document.getElementById('editQuestionText');
+        const editOptionsContainer = document.getElementById('editOptionsContainer');
+        const addOptionBtn = document.getElementById('addOptionBtn');
+        const saveEditedQuestionBtn = document.getElementById('saveEditedQuestionBtn');
+        const deleteQuestionBtn = document.getElementById('deleteQuestionBtn');
+
+        const newQuestionIdInput = document.getElementById('newQuestionId');
+        const newQuestionTextarea = document.getElementById('newQuestionText');
+        const newOptionsContainer = document.getElementById('newOptionsContainer');
+        const addNewOptionBtn = document.getElementById('addNewOptionBtn');
+        const saveNewQuestionBtn = document.getElementById('saveNewQuestionBtn');
+
+        let currentMode = 'flowchart'; // Track current mode
+
+        // Function to switch modes
+        function setMode(mode) {
+            currentMode = mode;
+            // Reset all containers and button styles
+            [flowchartContainer, contactsContainer, questionEditorContainer].forEach(container => container.classList.add('hidden'));
+            [flowchartModeBtn, contactsModeBtn, questionEditorModeBtn].forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-800');
+            });
+
+            // Set active mode
+            if (mode === 'flowchart') {
+                flowchartContainer.classList.remove('hidden');
+                flowchartModeBtn.classList.remove('bg-gray-200', 'text-gray-800');
+                flowchartModeBtn.classList.add('bg-indigo-600', 'text-white');
+                render('start'); // Initialize flowchart when switching back
+            } else if (mode === 'contacts') {
+                contactsContainer.classList.remove('hidden');
+                contactsModeBtn.classList.remove('bg-gray-200', 'text-gray-800');
+                contactsModeBtn.classList.add('bg-indigo-600', 'text-white');
+                renderContacts(); // Render contacts when switching to contacts mode
+            } else if (mode === 'questionEditor') {
+                questionEditorContainer.classList.remove('hidden');
+                questionEditorModeBtn.classList.remove('bg-gray-200', 'text-gray-800');
+                questionEditorModeBtn.classList.add('bg-indigo-600', 'text-white');
+                renderQuestionEditor(); // Render question editor
+            }
+        }
+
+        // Function to render the flowchart
+        function render(id) {
+            const node = flowchartData[id];
+            if (!node) {
+                q.textContent = 'エラー: 次の項目が見つかりません (' + id + ')。質問編集モードで存在するか確認してください。';
+                o.innerHTML = '';
+                return;
+            }
+
+            // If it's a result
+            if (node.isResult) {
+                rt.textContent = node.question;
+                c.classList.add('hidden');
+                r.classList.remove('hidden');
+                // Display contacts on the result screen
+                renderResultContacts();
+            } else { // If it's a question
+                q.textContent = node.question;
+                o.innerHTML = '';
+                if (node.options) {
+                    node.options.forEach(option => {
+                        const button = document.createElement('button');
+                        button.textContent = option.text;
+                        button.className = 'w-full md:w-auto flex-1 bg-white border-2 border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100';
+                        button.addEventListener('click', () => render(option.next));
+                        o.appendChild(button);
+                    });
+                }
+                c.classList.remove('hidden');
+                r.classList.add('hidden');
+                resultContacts.classList.add('hidden'); // Hide contacts on non-result screen
+            }
+        }
+
+        // Contact data (loaded from local storage)
+        let contacts = JSON.parse(localStorage.getItem('emergencyContacts')) || [];
+
+        // Function to render contacts in the contacts mode
+        function renderContacts() {
+            contactList.innerHTML = ''; // Clear existing list
+            if (contacts.length === 0) {
+                noContactsMessage.classList.remove('hidden');
+            } else {
+                noContactsMessage.classList.add('hidden');
+                contacts.forEach((contact, index) => {
+                    const contactDiv = document.createElement('div');
+                    contactDiv.className = 'flex items-center justify-between p-4 mb-3 bg-white rounded-lg shadow-sm border border-gray-200';
+                    contactDiv.innerHTML = `
+                        <div>
+                            <p class="font-semibold text-lg">${contact.name}</p>
+                            <p class="text-gray-600">${contact.phone}</p>
+                        </div>
+                        <button class="delete-contact-btn bg-red-500 text-white p-2 rounded-lg hover:bg-red-600" data-index="${index}">削除</button>
+                    `;
+                    contactList.appendChild(contactDiv);
+                });
+            }
+        }
+
+        // Function to render contacts on the result screen
+        function renderResultContacts() {
+            resultContactList.innerHTML = ''; // Clear existing list
+            if (contacts.length === 0) {
+                noResultContactsMessage.classList.remove('hidden');
+                resultContacts.classList.remove('hidden'); // Show container even if no contacts
+            } else {
+                noResultContactsMessage.classList.add('hidden');
+                contacts.forEach(contact => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'mb-1';
+                    listItem.textContent = `${contact.name}: ${contact.phone}`;
+                    resultContactList.appendChild(listItem);
+                });
+                resultContacts.classList.remove('hidden'); // Show the container
+            }
+        }
+
+        // Function to add a contact
+        addContactBtn.addEventListener('click', () => {
+            const name = contactNameInput.value.trim();
+            const phone = contactPhoneInput.value.trim();
+
+            if (name && phone) {
+                contacts.push({ name, phone });
+                localStorage.setItem('emergencyContacts', JSON.stringify(contacts)); // Save to local storage
+                contactNameInput.value = '';
+                contactPhoneInput.value = '';
+                renderContacts(); // Update list
+            } else {
+                console.log('名前と電話番号を入力してください。');
+                // Optionally, add a simple UI message here instead of console.log
+            }
+        });
+
+        // Function to delete a contact (event delegation)
+        contactList.addEventListener('click', (event) => {
+            if (event.target.classList.contains('delete-contact-btn')) {
+                const index = event.target.dataset.index;
+                contacts.splice(index, 1); // Remove from array
+                localStorage.setItem('emergencyContacts', JSON.stringify(contacts)); // Update local storage
+                renderContacts(); // Update list
+            }
+        });
+
+        // --- Question Editor Functions ---
+
+        // Render the question editor UI
+        function renderQuestionEditor() {
+            populateQuestionSelector();
+            editQuestionForm.classList.add('hidden'); // Hide form until a question is selected
+            clearEditForm(); // Clear any previous data
+            clearNewQuestionForm(); // Clear new question form on mode switch
+        }
+
+        // Populate the select dropdown with existing question IDs
+        function populateQuestionSelector() {
+            selectQuestionToEdit.innerHTML = '<option value="">質問を選択してください</option>';
+            Object.keys(flowchartData).forEach(id => {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = id;
+                selectQuestionToEdit.appendChild(option);
+            });
+        }
+
+        // Load selected question into the edit form
+        selectQuestionToEdit.addEventListener('change', (event) => {
+            const questionId = event.target.value;
+            if (questionId) {
+                loadQuestionForEditing(questionId);
+                editQuestionForm.classList.remove('hidden');
+            } else {
+                editQuestionForm.classList.add('hidden');
+                clearEditForm();
+            }
+        });
+
+        function loadQuestionForEditing(id) {
+            const node = flowchartData[id];
+            if (!node) {
+                console.error('エラー: 質問が見つかりません:', id);
+                clearEditForm();
+                editQuestionForm.classList.add('hidden');
+                return;
+            }
+
+            editQuestionId.value = id;
+            editQuestionText.value = node.question || '';
+            editOptionsContainer.innerHTML = ''; // Clear existing options
+
+            if (!node.isResult && node.options) {
+                node.options.forEach((option, index) => {
+                    addOptionField(option.text, option.next, 'edit');
+                });
+            } else if (node.isResult) {
+                // For result nodes, there are no options to edit, just the question text
+                const resultMessage = document.createElement('p');
+                resultMessage.className = 'text-gray-600 text-sm italic mb-2';
+                resultMessage.textContent = 'このノードは結果ノードなので、選択肢はありません。';
+                editOptionsContainer.appendChild(resultMessage);
+            }
+        }
+
+        // Add an option input field for editing
+        function addOptionField(text = '', next = '', type = 'edit') {
+            const container = (type === 'edit') ? editOptionsContainer : newOptionsContainer;
+
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'flex flex-col md:flex-row gap-2 mb-2 p-2 border border-gray-200 rounded-lg bg-white';
+            optionDiv.innerHTML = `
+                <input type="text" placeholder="選択肢テキスト" value="${text}" class="option-text flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-400">
+                <input type="text" placeholder="次の質問ID" value="${next}" class="option-next flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-400">
+                <button class="remove-option-btn bg-red-400 text-white p-2 rounded-md hover:bg-red-500">削除</button>
+            `;
+            container.appendChild(optionDiv);
+
+            // Add event listener for remove button
+            optionDiv.querySelector('.remove-option-btn').addEventListener('click', () => {
+                optionDiv.remove();
+            });
+        }
+
+        // Clear the edit question form
+        function clearEditForm() {
+            editQuestionId.value = '';
+            editQuestionText.value = '';
+            editOptionsContainer.innerHTML = '';
+            selectQuestionToEdit.value = ''; // Reset dropdown
+        }
+
+        // Clear the new question form
+        function clearNewQuestionForm() {
+            newQuestionIdInput.value = '';
+            newQuestionTextarea.value = '';
+            newOptionsContainer.innerHTML = '';
+        }
+
+        // Save edited question
+        saveEditedQuestionBtn.addEventListener('click', () => {
+            const id = editQuestionId.value.trim();
+            const questionText = editQuestionText.value.trim();
+            const options = [];
+            const optionElements = editOptionsContainer.querySelectorAll('.flex.flex-col.md\\:flex-row.gap-2.mb-2');
+
+            let isResultNode = false;
+            // Check if the node is a result node (it won't have options)
+            if (flowchartData[id] && flowchartData[id].isResult) {
+                isResultNode = true;
+            }
+
+            if (!isResultNode) {
+                optionElements.forEach(optionDiv => {
+                    const text = optionDiv.querySelector('.option-text').value.trim();
+                    const next = optionDiv.querySelector('.option-next').value.trim();
+                    if (text && next) {
+                        options.push({ text, next });
+                    }
+                });
+            }
+
+            if (id && questionText) {
+                if (isResultNode) {
+                    flowchartData[id] = { isResult: true, question: questionText };
+                } else {
+                    flowchartData[id] = { question: questionText, options: options.length > 0 ? options : undefined };
+                }
+                localStorage.setItem('flowchartData', JSON.stringify(flowchartData));
+                console.log('質問が保存されました:', flowchartData[id]);
+                alert('質問が正常に保存されました！'); // Simple alert for confirmation
+                setMode('flowchart'); // Go back to flowchart mode after saving
+            } else {
+                alert('質問IDと質問文は必須です。');
+            }
+        });
+
+        // Add option field for editing
+        addOptionBtn.addEventListener('click', () => addOptionField('', '', 'edit'));
+
+        // Delete question
+        deleteQuestionBtn.addEventListener('click', () => {
+            const idToDelete = editQuestionId.value.trim();
+            if (idToDelete && confirm(`本当に質問 '${idToDelete}' を削除しますか？`)) {
+                delete flowchartData[idToDelete];
+                localStorage.setItem('flowchartData', JSON.stringify(flowchartData));
+                alert('質問が削除されました！');
+                setMode('flowchart'); // Go back to flowchart mode after deleting
+            }
+        });
+
+
+        // Add option field for new question
+        addNewOptionBtn.addEventListener('click', () => addOptionField('', '', 'new'));
+
+        // Save new question
+        saveNewQuestionBtn.addEventListener('click', () => {
+            const newId = newQuestionIdInput.value.trim();
+            const newText = newQuestionTextarea.value.trim();
+            const newOptions = [];
+            const newOptionElements = newOptionsContainer.querySelectorAll('.flex.flex-col.md\\:flex-row.gap-2.mb-2');
+
+            newOptionElements.forEach(optionDiv => {
+                const text = optionDiv.querySelector('.option-text').value.trim();
+                const next = optionDiv.querySelector('.option-next').value.trim();
+                if (text && next) {
+                    newOptions.push({ text, next });
+                }
+            });
+
+            if (newId && newText) {
+                if (flowchartData[newId]) {
+                    alert('この質問IDは既に存在します。別のIDを使用してください。');
+                    return;
+                }
+                if (newOptions.length === 0 && !confirm('選択肢がありません。結果ノードとして保存しますか？')) {
+                    return;
+                }
+
+                if (newOptions.length === 0) {
+                    flowchartData[newId] = { isResult: true, question: newText };
+                } else {
+                    flowchartData[newId] = { question: newText, options: newOptions };
+                }
+
+                localStorage.setItem('flowchartData', JSON.stringify(flowchartData));
+                console.log('新しい質問が保存されました:', flowchartData[newId]);
+                alert('新しい質問が正常に保存されました！');
+                setMode('flowchart'); // Go back to flowchart mode after saving
+            } else {
+                alert('質問IDと質問文は必須です。');
+            }
+        });
+
+
+        // Set up main event listeners
+        rs.addEventListener('click', () => {
+            render('start');
+        });
+
+        endBtn.addEventListener('click', () => {
+            // This button currently resets the flowchart, effectively "ending" the current session.
+            // If true termination is needed (e.g., closing the tab), JavaScript cannot directly do that
+            // without user interaction/browser specific APIs.
+            setMode('flowchart'); // Resets to the initial flowchart state.
+        });
+
+        flowchartModeBtn.addEventListener('click', () => setMode('flowchart'));
+        contactsModeBtn.addEventListener('click', () => setMode('contacts'));
+        questionEditorModeBtn.addEventListener('click', () => setMode('questionEditor'));
+
+        // Initial rendering (start with flowchart mode)
+        setMode('flowchart');
+    </script>
+</body>
+</html>
